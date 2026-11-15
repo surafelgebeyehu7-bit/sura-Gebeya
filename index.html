@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ሱራ ገበያ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🛍️ ሱራ ገበያ</h1>
+    <p>የሚፈልጉትን በቀላሉ ያግኙ!</p>
+    <a href="admin.html">Admin Dashboard</a>
+  </header>
+
+  <main>
+    <section class="search">
+      <input id="searchInput" placeholder="ምርት ፈልግ...">
+    </section>
+
+    <section>
+      <h2>ምርቶቻችን</h2>
+      <div id="productGrid" class="products"></div>
+    </section>
+
+    <section class="cart">
+      <h2>🛒 የግዢ ቅርጫት</h2>
+      <div id="cartItems"></div>
+      <h3>ጠቅላላ: <span id="total">0</span> ብር</h3>
+
+      <h2>የትዕዛዝ መረጃ</h2>
+      <form id="orderForm">
+        <input id="customerName" placeholder="ሙሉ ስም" required>
+        <input id="customerPhone" type="tel" placeholder="የስልክ ቁጥር" required>
+        <textarea id="customerAddress" placeholder="የማድረሻ አድራሻ" required></textarea>
+        <button type="submit">ትዕዛዝ አስገባ</button>
+      </form>
+      <p id="orderMessage"></p>
+    </section>
+  </main>
+
+  <footer>© 2026 ሱራ ገበያ</footer>
+  <script src="script.js"></script>
+</body>
+</html>
