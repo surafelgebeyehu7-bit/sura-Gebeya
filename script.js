@@ -150,3 +150,98 @@ document.getElementById("orderForm").addEventListener("submit", event => {
 
 showProducts();
 showCart();
+  showCart();
+}
+
+function showCart() {
+  cartItems.innerHTML = "";
+  let total = 0;
+
+  cart.forEach(item => {
+    total += item.price * item.quantity;
+
+    const row = document.createElement("div");
+    row.className = "cart-item";
+
+    const name = document.createElement("span");
+    name.textContent = `${item.name} × ${item.quantity}`;
+
+    const amount = document.createElement("span");
+    amount.textContent = `${item.price * item.quantity} ብር`;
+
+    const remove = document.createElement("button");
+    remove.textContent = "−";
+    remove.addEventListener("click", () => changeQuantity(item.id, -1));
+
+    const add = document.createElement("button");
+    add.textContent = "+";
+    add.addEventListener("click", () => changeQuantity(item.id, 1));
+
+    row.append(name, amount, remove, add);
+    cartItems.appendChild(row);
+  });
+
+  totalElement.textContent = total;
+}
+
+function changeQuantity(id, amount) {
+  const item = cart.find(p => p.id === id);
+  if (!item) return;
+
+  item.quantity += amount;
+
+  if (item.quantity <= 0) {
+    cart = cart.filter(p => p.id !== id);
+  }
+
+  saveCart();
+  showCart();
+}
+
+document.getElementById("searchInput").addEventListener("input", event => {
+  const word = event.target.value.toLowerCase();
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(word) ||
+    p.category.toLowerCase().includes(word)
+  );
+  showProducts(filtered);
+});
+
+document.getElementById("orderForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  if (cart.length === 0) {
+    alert("እባክዎ መጀመሪያ ምርት ወደ ቅርጫት ይጨምሩ።");
+    return;
+  }
+
+  const order = {
+    id: Date.now(),
+    name: document.getElementById("customerName").value.trim(),
+    phone: document.getElementById("customerPhone").value.trim(),
+    address: document.getElementById("customerAddress").value.trim(),
+    items: cart.map(item => ({...item})),
+    total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    date: new Date().toLocaleString()
+  };
+
+  if (!order.name || !order.phone || !order.address) {
+    alert("እባክዎ ሁሉንም ቦታዎች ይሙሉ።");
+    return;
+  }
+
+  const orders = JSON.parse(localStorage.getItem("suraOrders")) || [];
+  orders.push(order);
+  localStorage.setItem("suraOrders", JSON.stringify(orders));
+
+  cart = [];
+  saveCart();
+  showCart();
+
+  document.getElementById("orderForm").reset();
+  document.getElementById("orderMessage").textContent =
+    "ትዕዛዝዎ ተመዝግቧል! አመሰግናለን።";
+});
+
+showProducts();
+showCart();
